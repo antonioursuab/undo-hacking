@@ -1,4 +1,5 @@
 # undo-hacking
+<pre>
 ES-ES <br />
 undo_hacking.php - Control del Archivos Web<br />
 NOTE: Requiere PHP versión 5 o superior<br />
@@ -17,3 +18,4 @@ NOTE: Requiere PHP versión 5 o superior<br />
          1.6.0 Se añade el parametro delete_htaccess, que si es 1 elimina los archivos htaccess del directorio.<br />
  
  
+</pre>
