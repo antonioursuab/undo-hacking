@@ -1,6 +1,5 @@
 # undo-hacking
 ES-ES
-
 undo_hacking.php - Control del Archivos Web
 NOTE: Requiere PHP versión 5 o superior
 @package ---
