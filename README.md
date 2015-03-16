@@ -16,6 +16,7 @@ NOTE: Requiere PHP versión 5 o superior
          1.4.0 Se configuran las leyendas
          1.5.0 Se añade el nombre de este archivo para que no lo pille como fichero modificado recientemente "undo_hacking.php". Line 121
          1.6.0 Se añade el parametro delete_htaccess, que si es 1 elimina los archivos htaccess del directorio.
+         1.7.0 Se han solucionado algun defecto de estilo. Y se añade al resultado el ID de Versión, para tener mas control.
  
  
 </pre>
