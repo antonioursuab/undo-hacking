@@ -3,9 +3,9 @@
 	set_time_limit(0);
 
  
-	$version = "1.7.0";
+	$version = "1.9.0";
 	$cont_fic = 0;
-	$msg = "<html><head><title>Check Archivos web</title></head><body style=\"font-family:Verdana; font-size:11px;\">";
+	$msg = "<html><head><title>Check Archivos web</title><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css'><script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script></head><body style=\"font-family:Verdana; font-size:11px;\">";
 	$ssw = 0;
 	$hora_ini = strtotime(date ("F d Y H:i:s."));
 	$parametros = "";
@@ -23,26 +23,28 @@
 	$mail->SMTPAuth = true;
 	$mail->Username = "pruebas@pruebas.com";
 	$mail->Password = "Password";
+	
 
 	/*****************************************************/
 	// COMPROBAMOS LA INFORMACION SOBRE LOS DIRECTORIOS 
 	
 	$path = $_SERVER['SCRIPT_FILENAME'];
 	$data["exists"] = is_file($path);// Comprobamos si el fichero es escribible
-  $data["writable"] = is_writable($path);// Leemos los permisos del fichero
-  $data["chmod"] = ($data["exists"] ? substr(sprintf("%o", fileperms($path)), -4) : FALSE);// Extraemos la extensión, un sólo paso
-  $data["ext"] = substr(strrchr($path, "."),1);// Primer paso de lectura de ruta
-  $data["path"] = array_shift(explode(".".$data["ext"],$path));// Primer paso de lectura de nombre
-  $data["name"] = array_pop(explode("/",$data["path"]));// Ajustamos nombre a FALSE si está vacio
-  $data["name"] = ($data["name"] ? $data["name"] : FALSE);// Ajustamos la ruta a FALSE si está vacia
-  $data["path"] = ($data["exists"] ? ($data["name"] ? realpath(array_shift(explode($data["name"],$data["path"]))) : realpath(array_shift(explode($data["ext"],$data["path"])))) : ($data["name"] ? array_shift(explode($data["name"],$data["path"])) : ($data["ext"] ? array_shift(explode($data["ext"],$data["path"])) : rtrim($data["path"],"/")))) ;
-  $data["filename"] = (($data["name"] OR $data["ext"]) ? $data["name"].($data["ext"] ? "." : "").$data["ext"] : FALSE);// Devolvemos los resultados
+  	$data["writable"] = is_writable($path);// Leemos los permisos del fichero
+  	$data["chmod"] = ($data["exists"] ? substr(sprintf("%o", fileperms($path)), -4) : FALSE);// Extraemos la extensión, un sólo paso
+  	$data["ext"] = substr(strrchr($path, "."),1);// Primer paso de lectura de ruta
+  	$data["path"] = array_shift(explode(".".$data["ext"],$path));// Primer paso de lectura de nombre
+  	$data["name"] = array_pop(explode("/",$data["path"]));// Ajustamos nombre a FALSE si está vacio
+  	$data["name"] = ($data["name"] ? $data["name"] : FALSE);// Ajustamos la ruta a FALSE si está vacia
+  	$data["path"] = ($data["exists"] ? ($data["name"] ? realpath(array_shift(explode($data["name"],$data["path"]))) : realpath(array_shift(explode($data["ext"],$data["path"])))) : ($data["name"] ? array_shift(explode($data["name"],$data["path"])) : ($data["ext"] ? array_shift(explode($data["ext"],$data["path"])) : rtrim($data["path"],"/")))) ;
+  	$data["filename"] = (($data["name"] OR $data["ext"]) ? $data["name"].($data["ext"] ? "." : "").$data["ext"] : FALSE);// Devolvemos los resultados
 	$current_dir = $data["path"]."/";
-
+	
   
 	/*********************************************/
 	// ESTA ES LA LLAMADA A LA FUNCION PRINCIPAL
 	find_files($current_dir);
+	
 	
 	/*********************************************************/
 	// MENSAJE --> PHP MAILER
@@ -78,8 +80,6 @@
 	
 /*************************************************************************************************************************************************************
 **************************************************************************************************************************************************************
-**************************************************************************************************************************************************************
-**************************************************************************************************************************************************************
 **************************************************************************************************************************************************************/
 
 	/*********************************************************
@@ -99,7 +99,8 @@
 		$files = array();
 		$dirs = array($seed);
 
-		$msg .= '<br /><br /><table style="font-family:Verdana; font-size:10px;">';
+		$msg .= "<br /><br />";
+		$msg .= "<table class='table table-bordered table-hover table-condensed'>";
 
 		while(NULL !== ($dir = array_pop($dirs))) {   
 		   if($dh = opendir($dir)) {
@@ -122,6 +123,7 @@
 		}
 
 		$msg .= '</table >';	
+
 		
 		//CREAMOS LA LEYENDA PARA EL CORREO
 		$hora_fin = strtotime(date ("F d Y H:i:s."));
@@ -372,45 +374,47 @@
 		global $msg;
 		global $cont_fic;
 		
+		global $current_dir;
+		
 		if (!file_exists($this_file)){return;}
 		switch ($type) {
 			case 'deleted':
-				$style= 'style="color:black; border:red 1px solid; background-color:yellow; text-decoration:none;"';
+				$style= '';
 				$text = 'Archivo ELIMINADO';
 				$text_s = 'Eliminado';
 				break;
 			case 'recent':
 				$ssw++;
-				$style= 'style="color:white; border:#333 1px solid; background-color:red; text-decoration:none;"';
+				$style= 'class="danger"';
 				$text = 'PELIGRO MODIFICADO';
 				$text_s = '<b>PELIGRO MODIFICADO</b>';
 				break;
 			case 'manual':
 				$ssw++;
-				$style= 'style="color:black; border:#333 1px solid; background-color:#e2e2e2; text-decoration:none;"';
+				$style= 'class="active"';
 				$text = '<b>Manual check</b>';
 				$text_s = 'Mirar Contenido:<br /><b>No se puede leer</b>';
 				break;
 			case 'danger':
 				$ssw++;
-				$style= 'style="color:#FFF; border:#FFF700 2px solid; background-color:#FF0000; text-decoration:none;"';
+				$style= 'class="success"';
 				$text = 'Contiene <b>'.strtoupper($value).'</b>';
 				$text_s = '<b>FUNCION PELIGROSA</b>';
 				break;	
 			case 'common':
-				$style= 'style="color:#002F46; border:#333 1px solid; background-color:white; text-decoration:none;"';
+				$style= ' class="warning"';
 				$text = 'Contiene '.strtoupper($value);
 				$text_s = 'JOOMLA FILE';
 				break;	
 			case 'htaccess':
 				$ssw++;
-				$style= 'style="color:white; border:#333 1px solid; background-color:#AB01AE; text-decoration:none;"';
+				$style= '';
 				$text = 'PELIGRO HTACCESS';
 				$text_s = '<b>PELIGRO HTACCESS</b>';
 				break;	
 			case 'denied':
 				$ssw++;
-				$style= 'style="color:white; border:#333 1px solid; background-color:#09A309; text-decoration:none;"';
+				$style= ' class="info"';
 				$text = 'Permiso denegado';
 				$text_s = 'Permiso denegado';
 				break;			
@@ -418,7 +422,7 @@
 
 		$style2 = $style;
 
-		if($alertday) $style2 = 'style="color:yellow; border:#000 1px solid; background-color:black;"';
+		if($alertday) $style2 = 'style="border:#000 1px solid;"';
 
 		
 		$cont_fic++;
@@ -429,7 +433,7 @@
 				<td '.$style.'>'.$text_s.'</td>
 				<td '.$style2.'><b>'.$seconds_diff.'</b></td>
 				<td '.$style.'>' .date ("d-m-Y H:i:s", filemtime($this_file)).'</td>
-				<td '.$style.'>'.$this_file.'</td>
+				<td '.$style.'>'.str_ireplace($current_dir, "", $this_file).'</td>
 				<td '.$style.'>'.$text.'</td>
 				<td '.$style.'>'.substr(decoct(fileperms($this_file)),3).'</td>		
 			
@@ -486,43 +490,43 @@
 		global $version;
 		
 	
-		$aux = '<table style="font-family:Verdana; font-size:10px; background-color:black; color:white;">';
-		$aux .= '<tr>
-					<td>CODIGO</td>
-					<td>DESCRIPCION</td>
-					<td>ACCION</td>
+		$aux = '<table class="table table-bordered table-hover table-condensed">';
+		$aux .= '<tr style="background-color:#AEC6CF;" >
+					<th>CODIGO</th>
+					<th>DESCRIPCION</th>
+					<th>ACCION</th>
 				</tr>';
-		$aux .= '<tr style="color:black; border:red 1px solid; background-color:yellow;">
+		$aux .= '<tr>
 					<td>Eliminado</td>
 					<td>El archivo ha sido eliminado por estar configurado dentro de la lista de peligrosos<br />configurada en el codigo.</td>
 					<td></td>
 				</tr>';		
-		$aux .= '<tr style="color:white; border:#333 1px solid; background-color:red;">
+		$aux .= '<tr class="danger">
 					<td>PELIGRO MODIFICADO</td>
 					<td>Archivo potencialmente peligroso si no reconocemos la fecha de actualización.</td>
 					<td>PELIGRO REVISION URGENTE</td>
 				</tr>';	
-		$aux .= '<tr style="color:black; border:#333 1px solid; background-color:#e2e2e2;">
+		$aux .= '<tr class="active">
 					<td>Mirar Contenido:<br /><b>No se puede leer</b></td>
 					<td>Archivo bloqueado para lectura, revisar permisos y contenido si se desconoce la procedencia</td>
 					<td>PELIGRO REVISION URGENTE</td>
 				</tr>';		
-		$aux .= '<tr style="color:#FFF; border:#FFF700 2px solid; background-color:FF0000;">
+		$aux .= '<tr class="success">
 					<td>FUNCION PELIGROSA</td>
 					<td>Este archivo funciones denominadas como peligrosas o malintencionadas</td>
 					<td></td>
 				</tr>';				
-		$aux .= '<tr style="color:#002F46; border:#333 1px solid; background-color:white;">
+		$aux .= '<tr class="warning">
 					<td>JOOMLA FILE</td>
 					<td>Archivo de Core de Joomla que contiene funciones peligrosas o malintencionadas</td>
 					<td></td>
 				</tr>';	
-		$aux .= '<tr style="color:white; border:#333 1px solid; background-color:#AB01AE;">
+		$aux .= '<tr>
 					<td>HTACCESS FILE</td>
 					<td>Archivo potencialmente peligroso si no reconocemos la fecha de actualización.</td>
 					<td>PELIGRO REVISION URGENTE</td>
 				</tr>';	
-		$aux .= '<tr style="color:white; border:#333 1px solid; background-color:#09A309;">
+		$aux .= '<tr class="info">
 					<td>PERMISO DENEGADO</td>
 					<td>No se tiene permisos para revisar este archivo.</td>
 					<td></td>
@@ -531,11 +535,11 @@
 				
 				
 		/*  PARAMETROS  */
-		$aux .= '<table style="font-family:Verdana; font-size:10px; background-color:black; color:white;">';
-		$aux .= '<tr>
-					<td><b>PARAMETRO</b></td>
-					<td><b>DESCRIPCION</b></td>
-					<td><b>VALOR</b></td>
+		$aux .= '<table class="table table-bordered table-hover table-condensed">';
+		$aux .= '<tr style="background-color:#AEC6CF;" >
+					<th>PARAMETRO</th>
+					<th>DESCRIPCION</th>
+					<th>VALOR</th>
 				</tr>';
 
 		$aux .= '<tr>
@@ -590,9 +594,19 @@
 
 
 		$aux .= '</table >
-				<br /><b>Total: '.$ssw.' registros del alto Riesgo</b> (El tiempo de ejecucion del Script ha sido de '.$time_dif.' segundos)<br /><br />';	
-		$aux .= '<b>Vrs. del Script --> '.$version.'</b><br />';
+				<br /><pre><b>Total: '.$ssw.' registros del alto Riesgo</b> (El tiempo de ejecución del Script ha sido de '.$time_dif.' segundos)<br /><br />';	
+		$aux .= '<b>Vrs. del Script --> '.$version.'</b><br /></pre>';
+			
 		$msg = $aux . $msg;
+		
+		$conformato = "";
+		$conformato .= "<div class='container'>";
+		$conformato .= "	<div class='table-responsive'>";
+		$conformato .= $msg;
+		$conformato .= "</div>";
+		$conformato .= "</div>";
+		$msg = $conformato;
+		
 		return;
 	}
 	/**********************************************************************************************/
