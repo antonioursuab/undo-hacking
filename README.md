@@ -17,10 +17,10 @@ NOTE: Requiere PHP versión 5 o superior
          1.5.0 Se añade el nombre de este archivo para que no lo pille como fichero modificado recientemente "undo_hacking.php". Line 121
          1.6.0 Se añade el parametro delete_htaccess, que si es 1 elimina los archivos htaccess del directorio.
          1.7.0 Se han solucionado algún defecto de estilo. Y se añade al resultado el ID de Versión, para tener más control.
-	1.7.0 Se quita la opcion de si muestra o envia el correo, ya que lo enviara siempre pero cambiando el Asunto por OK, en el caso de que no haya ningun archivo. 
+               Se quita la opcion de si muestra o envia el correo, ya que lo enviara siempre pero cambiando el Asunto por OK, en el caso de que no haya ningun archivo.
                Se mete el Archivo HTACCESS al control por dias en vez de dejarlo que simepre saldria como malo.
-	1.8.0 Se añaden a la lista de extensiones ("gif", "jpg", "JPG"). Se añaden como funciones peligrosas "exif_read_data", "file_get_contents"
-	1.9.0 Se añaden estilos con Bootstrap a los resultados que se muestran en pantalla y se devuelven por correo
+         1.8.0 Se añaden a la lista de extensiones ("gif", "jpg", "JPG"). Se añaden como funciones peligrosas "exif_read_data", "file_get_contents"
+         1.9.0 Se añaden estilos con Bootstrap a los resultados que se muestran en pantalla y se devuelven por correo
  
  
 </pre>
