@@ -6,6 +6,7 @@ NOTE: Requiere PHP versión 5 o superior
 @package ---
 @author Antonio Ursúa Bayona
 @website http://aursua.blogspot.com.es/
+@GitHub https://github.com/antonioursuab/undo-hacking.git
 @Created 2013
 @version 1.0.0 Código Base
          1.1.0 Se añade las funciones de envío de correo y se recoge el HTML para enviarlo por correo
