@@ -113,7 +113,7 @@
 							$dirs[] = $path; 
 						}else{
 							
-							if(preg_match('/^.*\.(php[\d]?|js|htaccess|css)$/i', $path)){ 
+							if(preg_match('/^.*\.(php[\d]?|js|htaccess|css|gif|jpg|JPG)$/i', $path)){ 
 								check_files($path); 
 							}
 						} 
@@ -152,10 +152,15 @@
 		//CADENAS A BUSCAR --> 
 		$str_to_find[]='base64_decode';
 		$str_to_find[]='djeu84m';
-		//$str_to_find[]='system';				- esta en demasiados archivos de joomla para tener control
-		//$str_to_find[]='preg_replace'; 		- esta en demasiados archivos de joomla para tener control
+		$str_to_find[]='system';			//- esta en demasiados archivos de joomla para tener control
+		$str_to_find[]='preg_replace'; 			//- esta en demasiados archivos de joomla para tener control
 		$str_to_find[]='GIF89a1';
 		$str_to_find[]='iskorpitx';
+		$str_to_find[]='exif_read_data';		//- Se detecta este codigo dentro de archivos JPG
+		$str_to_find[]='file_get_contents';		//- Se detecta en un ataque dentro de /neumb/libraries/joomla/registry/registry.php
+		$str_to_find[]='fwrite';
+		$str_to_find[]='homepages';
+
 		
 		
 		
