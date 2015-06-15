@@ -7,7 +7,7 @@ NOTE: Requiere PHP versión 5 o superior
 @author Antonio Ursúa Bayona
 @website http://aursua.blogspot.com.es/
 @GitHub https://github.com/antonioursuab/undo-hacking.git
-@Wiki https://github.com/antonioursuab/undo-hacking/wiki/Inicio
+@Wiki https://github.com/antonioursuab/undo-hacking/wiki/
 @Created 2013
 @version 1.0.0 Código Base
          1.1.0 Se añade las funciones de envío de correo y se recoge el HTML para enviarlo por correo
